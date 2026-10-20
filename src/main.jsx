@@ -106,6 +106,7 @@ const updates = [
 function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState('home');
   const isNavigatingRef = useRef(false);
   const navTimeoutRef = useRef(null);
@@ -127,15 +128,32 @@ function Header() {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           setScrolled(window.scrollY > 20);
+          const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
+          setScrollProgress(pageHeight > 0 ? Math.min(100, (window.scrollY / pageHeight) * 100) : 0);
           ticking = false;
         });
         ticking = true;
       }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
 
     // Track active section as user scrolls
     const sectionIds = ['home', 'about', 'approach', 'technology', 'team', 'insights', 'updates', 'contact'];
+    const syncHashState = () => {
+      const hashId = window.location.hash.replace('#', '');
+      if (!sectionIds.includes(hashId)) return;
+
+      setActiveSection(hashId);
+      const target = document.getElementById(hashId);
+      if (target && hashId !== 'home') {
+        window.requestAnimationFrame(() => {
+          const headerOffset = 82;
+          const targetY = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+          window.scrollTo({ top: Math.max(0, targetY), behavior: 'auto' });
+        });
+      }
+    };
     const observer = new IntersectionObserver(
       entries => {
         if (isNavigatingRef.current) return;
@@ -153,8 +171,12 @@ function Header() {
       if (el) observer.observe(el);
     });
 
+    syncHashState();
+    window.addEventListener('hashchange', syncHashState);
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('hashchange', syncHashState);
       observer.disconnect();
       clearTimeout(navTimeoutRef.current);
     };
@@ -196,7 +218,10 @@ function Header() {
   };
 
   return (
-    <header className={`header ${scrolled ? 'scrolled' : ''}`}>
+    <header
+      className={`header ${scrolled ? 'scrolled' : ''}`}
+      style={{ '--scroll-progress': `${scrollProgress}%` }}
+    >
       <a
         className="logo"
         href="#home"
@@ -241,6 +266,7 @@ function Header() {
           Connect / Partner <Arrow />
         </a>
       </nav>
+      <span className="scroll-progress" aria-hidden="true" />
     </header>
   );
 }
@@ -355,6 +381,21 @@ function App() {
     }
   };
 
+  const handleScrollToSection = (e, targetId) => {
+    e.preventDefault();
+    const target = document.getElementById(targetId);
+    if (target) {
+      const headerOffset = 82;
+      const elementPosition = target.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({
+        top: Math.max(0, offsetPosition),
+        behavior: 'smooth'
+      });
+      window.history.pushState(null, '', `#${targetId}`);
+    }
+  };
+
   const submit = e => {
     e.preventDefault();
     setSent(true);
@@ -382,6 +423,28 @@ function App() {
           <section className="hero" id="home">
             <div className="hero-noise" />
             <div className="hero-copy animate show">
+              <div className="hero-badge-row">
+                <div className="hero-seal-badge" aria-label="SOLZEN Research & Learning Seal">
+                  <svg viewBox="0 0 100 100" className="hero-seal-svg" aria-hidden="true">
+                    <defs>
+                      <path id="sealPath" d="M 50, 50 m -36, 0 a 36,36 0 1,1 72,0 a 36,36 0 1,1 -72,0" />
+                    </defs>
+                    <text className="hero-seal-text">
+                      <textPath href="#sealPath" startOffset="0%">
+                        SOLZEN • RESEARCH &amp; LEARNING • 2026 •
+                      </textPath>
+                    </text>
+                  </svg>
+                  <div className="hero-seal-core">
+                    <img src="/solzen-logo.png" alt="SOLZEN Seal" />
+                  </div>
+                </div>
+                <div className="hero-badge-meta">
+                  <span className="hero-badge-tag">Early-Stage Research</span>
+                  <span className="hero-badge-sub">Pedagogical Systems · IITM Nirmaan</span>
+                </div>
+              </div>
+
               <p className="kicker">Technology × Education</p>
               <h1>
                 Making Learning Deeper.<br />
@@ -391,24 +454,60 @@ function App() {
                 SOLZEN is building a new approach to learning — one that moves beyond memorisation toward deeper understanding, measurable progress and real-world application.
               </p>
               <div className="hero-actions">
-                <a className="button dark" href="#about">
+                <a className="button dark" href="#about" onClick={e => handleScrollToSection(e, 'about')}>
                   Explore SOLZEN <span>↓</span>
                 </a>
-                <a className="underlink" href="#contact">
+                <a className="underlink" href="#contact" onClick={e => handleScrollToSection(e, 'contact')}>
                   Connect With Us <Arrow />
                 </a>
               </div>
             </div>
 
-            <div className="hero-object animate">
-              <div className="orbit o-one" />
-              <div className="orbit o-two" />
-              <div className="orbit o-three" />
-              <div className="object-core">
-                <span>Explore</span>
+            <div className="hero-object animate" id="hero-learning-sculpture">
+              {/* Soft blurred gold-and-sage glow behind planet */}
+              <div className="hero-glow" aria-hidden="true" />
+
+              {/* Entire planet system floating as one unit (8-12px vertical, 3-5px horizontal drift over 8-10s) */}
+              <div className="planet-system">
+                {/* Concentric rings group that reacts with subtle scale on hover */}
+                <div className="rings-group" aria-hidden="true">
+                  {/* Large dashed outer ring (rotates 50 to 70s) */}
+                  <div className="editorial-ring ring-outer" />
+                  {/* Concentric mid ring */}
+                  <div className="editorial-ring ring-mid" />
+                  {/* Amber dotted inner ring (rotates opposite direction, 35 to 45s) */}
+                  <div className="editorial-ring ring-inner" />
+                </div>
+
+                {/* Elliptical orbit line revolving 360 degrees around the planet */}
+                <div className="orbit-revolve-wrapper" aria-hidden="true">
+                  <div className="orbit o-one" />
+                  {/* Small amber orbit node pulsing softly every 3 to 4s */}
+                  <div className="orbit-node node-amber" />
+                  {/* Subtle dark green secondary node */}
+                  <div className="orbit-node node-forest" />
+                </div>
+
+                {/* Central Explore core floating independently (+4 to 6px extra) */}
+                <div className="core-float-wrapper">
+                  <a
+                    className="object-core"
+                    href="#about"
+                    onClick={e => handleScrollToSection(e, 'about')}
+                    aria-label="Explore SOLZEN learning philosophy - scroll to About section"
+                  >
+                    <div className="core-pulse" aria-hidden="true" />
+                    <span className="core-label">Explore</span>
+                    <span className="core-arrow" aria-hidden="true">↓</span>
+                  </a>
+                </div>
+
+                <p className="coordinate c-one" aria-hidden="true">UNDERSTAND / 01</p>
+                <p className="coordinate c-two" aria-hidden="true">APPLY / ∞</p>
               </div>
-              <p className="coordinate c-one">UNDERSTAND / 01</p>
-              <p className="coordinate c-two">APPLY / ∞</p>
+
+              {/* Subtle elliptical shadow beneath the planet that softens when the planet rises */}
+              <div className="hero-shadow" aria-hidden="true" />
             </div>
 
             <div className="hero-foot">
@@ -421,9 +520,16 @@ function App() {
           <section className="ecosystem-bar">
             <div className="ecosystem-badge">
               <span className="ecosystem-badge-tag">Incubated Ecosystem</span>
-              <span className="ecosystem-text">
-                Supported within the <strong>Nirmaan Ecosystem</strong>, IIT Madras
-              </span>
+              <div className="ecosystem-entity">
+                <img
+                  src="/nirmaan-logo.png"
+                  alt="Nirmaan IIT Madras Logo"
+                  className="ecosystem-logo"
+                />
+                <span className="ecosystem-text">
+                  Supported within the <strong>Nirmaan Ecosystem</strong>, IIT Madras
+                </span>
+              </div>
             </div>
             <div className="ecosystem-traits">
               <span><b>·</b> Research-minded</span>
@@ -755,7 +861,14 @@ function App() {
               <div className="footer-col">
                 <h5>Ecosystem &amp; Social</h5>
                 <ul>
-                  <li><span style={{ fontSize: '11px', color: '#8ba296' }}>Nirmaan, IIT Madras</span></li>
+                  <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <img
+                      src="/nirmaan-logo.png"
+                      alt="Nirmaan"
+                      style={{ width: '18px', height: '18px', borderRadius: '4px', objectFit: 'contain' }}
+                    />
+                    <span style={{ fontSize: '12px', color: '#8ba296' }}>Nirmaan, IIT Madras</span>
+                  </li>
                   <li><a href="https://linkedin.com/company/solzen" target="_blank" rel="noopener noreferrer">LinkedIn <Arrow /></a></li>
                   <li><a href="https://x.com/solzen_in" target="_blank" rel="noopener noreferrer">X / Twitter <Arrow /></a></li>
                   <li><a href="mailto:contact@solzen.in">contact@solzen.in</a></li>
