@@ -516,35 +516,27 @@ function App() {
             </div>
           </section>
 
-          {/* 2. ECOSYSTEM / CREDIBILITY BAR (FULL WIDTH, PROMINENT NIRMAAN ACCREDITATION) */}
-          <section className="ecosystem-bar" aria-label="Incubated Ecosystem Accreditation">
-            <div className="ecosystem-container">
-              <div className="ecosystem-brand-group">
-                <div className="ecosystem-logo-frame" title="Nirmaan, The Pre-Incubation Cell at IIT Madras">
+          {/* 2. INSTITUTIONAL AFFILIATION (NIRMAAN ECOSYSTEM, IIT MADRAS) */}
+          <section className="ecosystem-bar" aria-label="Institutional Affiliation">
+            <div className="ecosystem-container shell">
+              <div className="ecosystem-lockup">
+                <div className="ecosystem-logo-wrapper" title="Nirmaan, The Pre-Incubation Cell at IIT Madras">
                   <img
                     src="/nirmaan-logo.png"
                     alt="Nirmaan IIT Madras Logo"
                     className="ecosystem-logo"
-                    width="36"
-                    height="36"
+                    width="32"
+                    height="32"
+                    loading="lazy"
                   />
                 </div>
-                <div className="ecosystem-text-group">
-                  <div className="ecosystem-label-row">
-                    <span className="ecosystem-badge-tag">
-                      <span className="ecosystem-tag-dot" aria-hidden="true" />
-                      INCUBATED ECOSYSTEM
-                    </span>
-                  </div>
+                <div className="ecosystem-divider" aria-hidden="true" />
+                <div className="ecosystem-details">
+                  <span className="ecosystem-caption">INCUBATED ECOSYSTEM</span>
                   <p className="ecosystem-text">
-                    Supported within the <strong>Nirmaan Ecosystem</strong>, IIT Madras.
+                    Supported within the <strong>Nirmaan Ecosystem</strong>, <strong>IIT Madras</strong>
                   </p>
                 </div>
-              </div>
-              <div className="ecosystem-traits" aria-label="Ecosystem principles">
-                <span className="trait-item"><b>·</b> Research-minded</span>
-                <span className="trait-item"><b>·</b> Purpose-led</span>
-                <span className="trait-item"><b>·</b> Technology × Education</span>
               </div>
             </div>
           </section>
