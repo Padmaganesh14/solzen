@@ -40,7 +40,7 @@ const teamMembers = [
     name: 'Padma Ganesh P',
     role: 'Co-Founder & Product Lead',
     bio: 'Drives strategic product development, user experience design, and core educational workflows across interactive learning platforms.',
-    linkedin: 'https://linkedin.com/company/solzen'
+    linkedin: 'https://www.linkedin.com/in/padma-ganesh-p'
   },
   {
     initials: 'R',
