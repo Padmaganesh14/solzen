@@ -967,77 +967,140 @@ header.header .menu.menu-active span:last-child {
 }
 
 /* ==========================================================================
-   2. ECOSYSTEM CREDIBILITY BAR
+   2. ECOSYSTEM / INCUBATION CREDIBILITY BAR
+   Full-width anchor band with subtle borders, rich tactile ivory background,
+   accredited Nirmaan IIT Madras badge, and crisp editorial typography.
    ========================================================================== */
 
 .ecosystem-bar {
-  background: var(--ivory-alt);
+  width: 100%;
+  position: relative;
+  z-index: 10;
+  background-color: var(--ivory-alt);
+  background-image: linear-gradient(180deg, #F5EFE5 0%, #EDE5D6 100%);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  padding: 22px 6.5vw;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 2px 10px rgba(11, 51, 43, 0.03);
+  padding: 16px 0;
+  transition: background-color 0.3s var(--ease);
+}
+
+.ecosystem-container {
+  max-width: 1360px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 6.5vw, 96px);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 28px;
+  gap: 32px;
   flex-wrap: wrap;
 }
 
-.ecosystem-badge {
+.ecosystem-brand-group {
   display: flex;
   align-items: center;
   gap: 16px;
-  flex-wrap: wrap;
+  min-width: 0;
 }
 
-.ecosystem-entity {
-  display: inline-flex;
+.ecosystem-logo-frame {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: #FFFFFF;
+  border: 1px solid rgba(11, 51, 43, 0.14);
+  box-shadow: 0 2px 8px rgba(11, 51, 43, 0.08), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  padding: 4px;
+  flex-shrink: 0;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.ecosystem-logo-frame:hover {
+  transform: translateY(-1.5px);
+  border-color: rgba(201, 139, 60, 0.4);
+  box-shadow: 0 4px 14px rgba(11, 51, 43, 0.12);
 }
 
 .ecosystem-logo {
-  width: 32px;
-  height: 32px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  border-radius: 8px;
-  background: #ffffff;
-  border: 1px solid rgba(11, 51, 43, 0.16);
-  box-shadow: 0 2px 8px rgba(11, 51, 43, 0.1);
-  flex-shrink: 0;
-  transition: transform 0.3s var(--ease);
+  border-radius: 7px;
+  display: block;
 }
 
-.ecosystem-logo:hover {
-  transform: scale(1.06);
+.ecosystem-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ecosystem-label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .ecosystem-badge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-family: var(--mono);
   font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  background: rgba(11, 51, 43, 0.08);
-  color: var(--forest);
-  padding: 5px 12px;
+  color: var(--amber);
+  background: rgba(201, 139, 60, 0.09);
+  padding: 2.5px 8px;
   border-radius: 9999px;
-  border: 1px solid rgba(11, 51, 43, 0.14);
+  border: 1px solid rgba(201, 139, 60, 0.24);
+  line-height: 1.2;
+}
+
+.ecosystem-tag-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--amber);
+  display: inline-block;
+  box-shadow: 0 0 6px rgba(201, 139, 60, 0.6);
+  animation: ecosystem-dot-pulse 2.2s infinite ease-in-out;
+}
+
+@keyframes ecosystem-dot-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 1;
+  }
 }
 
 .ecosystem-text {
   font-family: var(--sans);
-  font-size: 13.5px;
+  font-size: 14.5px;
+  line-height: 1.45;
   color: var(--forest);
+  margin: 0;
+  letter-spacing: -0.01em;
 }
 
 .ecosystem-text strong {
   font-weight: 600;
+  color: var(--forest);
 }
 
 .ecosystem-traits {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 20px;
   font-family: var(--mono);
   font-size: 10.5px;
   letter-spacing: 0.08em;
@@ -1051,13 +1114,42 @@ header.header .menu.menu-active span:last-child {
   margin-right: 4px;
 }
 
+@media (max-width: 900px) {
+  .ecosystem-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .ecosystem-traits {
+    gap: 14px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ecosystem-bar {
+    padding: 14px 0;
+  }
+  .ecosystem-brand-group {
+    gap: 12px;
+  }
+  .ecosystem-logo-frame {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+  }
+  .ecosystem-text {
+    font-size: 13.5px;
+  }
+}
+
 /* ==========================================================================
    3. ABOUT / THE PROBLEM & OPPORTUNITY (WARM IVORY BACKGROUND)
    ========================================================================== */
 
 .opportunity {
-  padding-top: 130px;
-  padding-bottom: 130px;
+  padding-top: 56px;
+  padding-bottom: 120px;
   background-color: var(--ivory);
 }
 
@@ -2273,9 +2365,13 @@ footer {
     grid-template-columns: 1fr;
     gap: 32px;
   }
-  .opportunity, .think, .tech-section, .team, .journal, .contact {
+  .think, .tech-section, .team, .journal, .contact {
     padding-top: 80px;
     padding-bottom: 80px;
+  }
+  .opportunity {
+    padding-top: 40px;
+    padding-bottom: 70px;
   }
   .approach {
     padding: 80px 0 75px;

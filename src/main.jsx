@@ -441,7 +441,7 @@ function App() {
                 </div>
                 <div className="hero-badge-meta">
                   <span className="hero-badge-tag">Early-Stage Research</span>
-                  <span className="hero-badge-sub">Pedagogical Systems · IITM Nirmaan</span>
+                  <span className="hero-badge-sub">Pedagogical Architecture · Est. 2026</span>
                 </div>
               </div>
 
@@ -516,25 +516,36 @@ function App() {
             </div>
           </section>
 
-          {/* 2. ECOSYSTEM / CREDIBILITY BAR (PDF Section 4 & 21) */}
-          <section className="ecosystem-bar">
-            <div className="ecosystem-badge">
-              <span className="ecosystem-badge-tag">Incubated Ecosystem</span>
-              <div className="ecosystem-entity">
-                <img
-                  src="/nirmaan-logo.png"
-                  alt="Nirmaan IIT Madras Logo"
-                  className="ecosystem-logo"
-                />
-                <span className="ecosystem-text">
-                  Supported within the <strong>Nirmaan Ecosystem</strong>, IIT Madras
-                </span>
+          {/* 2. ECOSYSTEM / CREDIBILITY BAR (FULL WIDTH, PROMINENT NIRMAAN ACCREDITATION) */}
+          <section className="ecosystem-bar" aria-label="Incubated Ecosystem Accreditation">
+            <div className="ecosystem-container">
+              <div className="ecosystem-brand-group">
+                <div className="ecosystem-logo-frame" title="Nirmaan, The Pre-Incubation Cell at IIT Madras">
+                  <img
+                    src="/nirmaan-logo.png"
+                    alt="Nirmaan IIT Madras Logo"
+                    className="ecosystem-logo"
+                    width="36"
+                    height="36"
+                  />
+                </div>
+                <div className="ecosystem-text-group">
+                  <div className="ecosystem-label-row">
+                    <span className="ecosystem-badge-tag">
+                      <span className="ecosystem-tag-dot" aria-hidden="true" />
+                      INCUBATED ECOSYSTEM
+                    </span>
+                  </div>
+                  <p className="ecosystem-text">
+                    Supported within the <strong>Nirmaan Ecosystem</strong>, IIT Madras.
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="ecosystem-traits">
-              <span><b>·</b> Research-minded</span>
-              <span><b>·</b> Purpose-led</span>
-              <span><b>·</b> Technology × Education</span>
+              <div className="ecosystem-traits" aria-label="Ecosystem principles">
+                <span className="trait-item"><b>·</b> Research-minded</span>
+                <span className="trait-item"><b>·</b> Purpose-led</span>
+                <span className="trait-item"><b>·</b> Technology × Education</span>
+              </div>
             </div>
           </section>
 
