@@ -8,3 +8,5 @@ dist/
 .env.*
 !.env.example
 "@ | Out-File -Encoding utf8 .gitignore
+.vercel
+.env*
