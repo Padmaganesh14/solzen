@@ -1,11 +1,4 @@
 /* SOLZEN Brand Intro Screen */
-.logo img {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-  border-radius: 50%;
-  mix-blend-mode: multiply;
-}
 
 .brand-intro {
   position: fixed;
@@ -99,7 +92,8 @@
 }
 
 .site-wait {
-  opacity: 0;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 @keyframes intro-logo {

@@ -104,6 +104,150 @@ const updates = [
   }
 ];
 
+const orbitSections = {
+  explore: {
+    id: 'explore',
+    num: '00',
+    category: 'OVERVIEW',
+    label: 'EXPLORE',
+    title: 'Making Learning Deeper.',
+    subtitle: 'Making Understanding Actionable.',
+    desc: 'SOLZEN is building a new pedagogical approach — moving beyond memorisation toward deeper understanding, measurable progress and real-world application.',
+    actionLabel: 'Explore SOLZEN',
+    actionHref: '#about',
+    accent: 'Pedagogical Architecture'
+  },
+  about: {
+    id: 'about',
+    num: '01',
+    category: 'PROBLEM & OPPORTUNITY',
+    label: 'ABOUT',
+    title: 'Beyond Memorisation',
+    subtitle: 'Visualising abstract concepts',
+    desc: 'Students struggle to visualise underlying principles. We address where memorisation ends and durable, applicable understanding begins.',
+    actionLabel: 'Read Problem & Opportunity',
+    actionHref: '#about',
+    accent: 'Cognitive Depth',
+    x: 142,
+    y: 152,
+    lx: 126,
+    ly: 136,
+    anchor: 'end'
+  },
+  approach: {
+    id: 'approach',
+    num: '02',
+    category: 'LEARNING PIPELINE',
+    label: 'APPROACH',
+    title: 'Depth Has a Process',
+    subtitle: 'Understand · Assess · Reinforce · Apply',
+    desc: 'A structured four-stage learning rhythm: start with underlying intuition, assess conceptual evidence, adaptively reinforce, and apply knowledge.',
+    actionLabel: 'View learning pipeline',
+    actionHref: '#approach',
+    accent: '4-Stage Pipeline',
+    x: 412,
+    y: 140,
+    lx: 430,
+    ly: 124,
+    anchor: 'start'
+  },
+  technology: {
+    id: 'technology',
+    num: '03',
+    category: 'CAPABILITIES',
+    label: 'TECHNOLOGY',
+    title: 'Technology × Learning',
+    subtitle: 'Broad capabilities, kept high-level',
+    desc: 'Five public research pillars: conceptual visualisation, active inquiry exploration, continuous diagnostics, personalized reinforcement, and localized learning.',
+    actionLabel: 'Explore 5 tech pillars',
+    actionHref: '#technology',
+    accent: '5 Research Pillars',
+    x: 494,
+    y: 262,
+    lx: 512,
+    ly: 262,
+    anchor: 'start'
+  },
+  team: {
+    id: 'team',
+    num: '04',
+    category: 'LEADERSHIP',
+    label: 'TEAM',
+    title: 'The People Behind SOLZEN',
+    subtitle: 'Product, systems & cognitive modeling',
+    desc: 'Led by Padma Ganesh P, Rubeak, and Vignesh R S — combining product vision, distributed systems, and cognitive modeling technologies.',
+    actionLabel: 'Meet our leadership',
+    actionHref: '#team',
+    accent: 'Research Leadership',
+    x: 418,
+    y: 415,
+    lx: 436,
+    ly: 435,
+    anchor: 'start'
+  },
+  insights: {
+    id: 'insights',
+    num: '05',
+    category: 'RESEARCH JOURNAL',
+    label: 'INSIGHTS',
+    title: 'Learning Science Insights',
+    subtitle: 'Threshold concepts & cognitive depth',
+    desc: 'Essays on true understanding, moving beyond right answers, and making invisible mental models visible through multi-modal scaffolding.',
+    actionLabel: 'Read research insights',
+    actionHref: '#insights',
+    accent: 'Learning Science',
+    x: 280,
+    y: 512,
+    lx: 280,
+    ly: 542,
+    anchor: 'middle'
+  },
+  updates: {
+    id: 'updates',
+    num: '06',
+    category: 'MILESTONES',
+    label: 'UPDATES',
+    title: 'News & Announcements',
+    subtitle: 'IIT Madras Nirmaan ecosystem engagement',
+    desc: 'Supported within the Nirmaan Pre-Incubation ecosystem at IIT Madras, validating formative diagnostic pedagogy and our four-stage framework.',
+    actionLabel: 'See recent updates',
+    actionHref: '#updates',
+    accent: 'Ecosystem News',
+    x: 132,
+    y: 410,
+    lx: 112,
+    ly: 434,
+    anchor: 'end'
+  },
+  connect: {
+    id: 'connect',
+    num: '07',
+    category: 'COLLABORATION',
+    label: 'CONNECT',
+    title: 'Start a Conversation',
+    subtitle: 'Partnerships & institutional collaboration',
+    desc: 'Open channels for educational institutions, research collaborators, media inquiries, and career opportunities.',
+    actionLabel: 'Connect with our team',
+    actionHref: '#contact',
+    accent: 'Partnership Channels',
+    x: 72,
+    y: 268,
+    lx: 54,
+    ly: 268,
+    anchor: 'end'
+  }
+};
+
+const orbitNodes = [
+  orbitSections.about,
+  orbitSections.approach,
+  orbitSections.technology,
+  orbitSections.team,
+  orbitSections.insights,
+  orbitSections.updates,
+  orbitSections.connect
+];
+
 function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -243,6 +387,14 @@ function Header() {
         <span />
       </button>
 
+      {open && (
+        <div
+          className="nav-backdrop"
+          onClick={() => setOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       <nav className={open ? 'nav nav-open' : 'nav'}>
         <div className="nav-links-wrap">
           {navItems.map(item => {
@@ -349,11 +501,317 @@ function LegalModal({ type, onClose }) {
   );
 }
 
+function ExploreOrbit({
+  activeOrbitId,
+  setActiveOrbitId,
+  hoveredOrbitId,
+  setHoveredOrbitId,
+  isInteractingOrbit,
+  setIsInteractingOrbit,
+  handleScrollToSection
+}) {
+  const activeData = orbitSections[hoveredOrbitId || activeOrbitId] || orbitSections.explore;
+
+  return (
+    <div
+      className={`hero-object animate show ${isInteractingOrbit || hoveredOrbitId ? 'orbit-paused' : ''}`}
+      id="hero-learning-sculpture"
+      onMouseEnter={() => setIsInteractingOrbit(true)}
+      onMouseLeave={() => setIsInteractingOrbit(false)}
+    >
+      {/* Soft blurred gold-and-sage glow behind planet */}
+      <div className="hero-glow" aria-hidden="true" />
+
+      {/* Entire planet system floating stage */}
+      <div className="planet-system orbit-interactive-system">
+        <svg
+          viewBox="0 0 560 560"
+          className="orbit-svg"
+          aria-label="Interactive Solzen Explore Orbit Navigation"
+        >
+          <defs>
+            <radialGradient id="planetGrad" cx="36%" cy="30%" r="65%">
+              <stop offset="0%" stopColor="#1E594B" />
+              <stop offset="55%" stopColor="#0B332B" />
+              <stop offset="100%" stopColor="#061A15" />
+            </radialGradient>
+            <radialGradient id="activeNodeGrad" cx="40%" cy="35%" r="65%">
+              <stop offset="0%" stopColor="#E5B56E" />
+              <stop offset="50%" stopColor="#C98B3C" />
+              <stop offset="100%" stopColor="#9B6622" />
+            </radialGradient>
+            <radialGradient id="goldAuraGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="rgba(201, 139, 60, 0.45)" />
+              <stop offset="60%" stopColor="rgba(201, 139, 60, 0.12)" />
+              <stop offset="100%" stopColor="rgba(201, 139, 60, 0)" />
+            </radialGradient>
+          </defs>
+
+          {/* Concentric & Elliptical Guide Rings - Continuously rotating independent orbital tracks */}
+          <g className="orbit-guides" aria-hidden="true">
+            {/* Outer Dashed Sage Ring (r=256, clockwise slow rotation) */}
+            <g className="orbit-track-outer">
+              <circle cx="280" cy="280" r="256" className="svg-ring-outer" />
+            </g>
+
+            {/* Mid Fine Sage Ring (r=202, counter-clockwise smooth rotation) */}
+            <g className="orbit-track-mid">
+              <circle cx="280" cy="280" r="202" className="svg-ring-mid" />
+            </g>
+
+            {/* Inner Dotted Gold Ring (r=148, clockwise golden dot glide) */}
+            <g className="orbit-track-inner">
+              <circle cx="280" cy="280" r="148" className="svg-ring-inner" />
+            </g>
+
+            {/* Primary Tilted Elliptical Orbit Path (-24deg tilt, rx=262, ry=142, slow orbital precession) */}
+            <g className="orbit-track-ellipse-primary">
+              <ellipse
+                cx="280"
+                cy="280"
+                rx="262"
+                ry="142"
+                transform="rotate(-24 280 280)"
+                className="svg-ellipse-primary"
+              />
+            </g>
+
+            {/* Secondary Faint Elliptical Orbit Path (+24deg tilt, rx=246, ry=126, counter-precession) */}
+            <g className="orbit-track-ellipse-secondary">
+              <ellipse
+                cx="280"
+                cy="280"
+                rx="246"
+                ry="126"
+                transform="rotate(24 280 280)"
+                className="svg-ellipse-secondary"
+              />
+            </g>
+          </g>
+
+          {/* Revolving Decorative Orbit Beads */}
+          <g className="orbit-revolve-wrapper" aria-hidden="true">
+            <circle cx="482" cy="184" r="5.5" className="node-amber-svg" />
+            <circle cx="82" cy="370" r="4" className="node-forest-svg" />
+          </g>
+
+          {/* Scientific Coordinates */}
+          <g className="orbit-coordinates" aria-hidden="true">
+            <text x="450" y="65" textAnchor="end" className="svg-coord">UNDERSTAND / 01</text>
+            <text x="115" y="500" textAnchor="start" className="svg-coord">APPLY / ∞</text>
+          </g>
+
+          {/* 7 Interactive Section Nodes */}
+          <g className="orbit-interactive-nodes" role="group" aria-label="Solzen website sections">
+            {orbitNodes.map(sec => {
+              const isSelected = activeOrbitId === sec.id;
+              const isHovered = hoveredOrbitId === sec.id;
+              const isHighlighted = isSelected || isHovered;
+
+              return (
+                <g
+                  key={sec.id}
+                  className={`orbit-node-group ${isSelected ? 'is-selected' : ''} ${isHovered ? 'is-hovered' : ''}`}
+                  onClick={() => setActiveOrbitId(sec.id)}
+                  onMouseEnter={() => setHoveredOrbitId(sec.id)}
+                  onMouseLeave={() => setHoveredOrbitId(null)}
+                  onFocus={() => setHoveredOrbitId(sec.id)}
+                  onBlur={() => setHoveredOrbitId(null)}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`Explore ${sec.label} section: ${sec.title}`}
+                  aria-pressed={isSelected}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setActiveOrbitId(sec.id);
+                    }
+                  }}
+                >
+                  {/* Comfortable touch / click hit area */}
+                  <circle cx={sec.x} cy={sec.y} r="26" className="node-hit-area" />
+
+                  {/* Pulsing aura when active or hovered */}
+                  {isHighlighted && (
+                    <circle cx={sec.x} cy={sec.y} r="16" className="node-glow-aura" />
+                  )}
+
+                  {/* Connecting tick line from path to label */}
+                  <line
+                    x1={sec.x}
+                    y1={sec.y}
+                    x2={sec.lx}
+                    y2={sec.ly - 4}
+                    className="node-connector"
+                  />
+
+                  {/* Main Node Bead */}
+                  <circle
+                    cx={sec.x}
+                    cy={sec.y}
+                    r={isSelected ? 7.5 : 5.5}
+                    className="node-bead-circle"
+                  />
+                  <circle
+                    cx={sec.x}
+                    cy={sec.y}
+                    r={isSelected ? 3 : 2}
+                    className="node-core-dot"
+                  />
+
+                  {/* Number Tag */}
+                  <text
+                    x={sec.lx}
+                    y={sec.ly - 13}
+                    textAnchor={sec.anchor}
+                    className="node-text-num"
+                  >
+                    {sec.num}
+                  </text>
+
+                  {/* Section Label */}
+                  <text
+                    x={sec.lx}
+                    y={sec.ly}
+                    textAnchor={sec.anchor}
+                    className="node-text-label"
+                  >
+                    {sec.label}
+                  </text>
+
+                  {/* Active Indicator Accent */}
+                  {isSelected && (
+                    <circle
+                      cx={sec.anchor === 'start' ? sec.lx + 8 : sec.anchor === 'end' ? sec.lx - 8 : sec.lx}
+                      cy={sec.ly + 9}
+                      r="2.5"
+                      className="node-active-accent"
+                    />
+                  )}
+                </g>
+              );
+            })}
+          </g>
+
+          {/* Central EXPLORE Core (Default Overview / Reset - size and styling preserved) */}
+          <g
+            className={`orbit-center-core ${activeOrbitId === 'explore' ? 'is-overview' : ''}`}
+            onClick={() => setActiveOrbitId('explore')}
+            onMouseEnter={() => setHoveredOrbitId('explore')}
+            onMouseLeave={() => setHoveredOrbitId(null)}
+            onFocus={() => setHoveredOrbitId('explore')}
+            onBlur={() => setHoveredOrbitId(null)}
+            tabIndex={0}
+            role="button"
+            aria-label="Explore Solzen Overview (Reset selection)"
+            aria-pressed={activeOrbitId === 'explore'}
+            onKeyDown={e => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setActiveOrbitId('explore');
+              }
+            }}
+          >
+            <circle cx="280" cy="280" r="66" className="center-hit-area" />
+            <circle cx="280" cy="280" r="60" className="center-pulse-ring" />
+            <circle cx="280" cy="280" r="54" fill="url(#planetGrad)" className="center-sphere" />
+            <circle cx="280" cy="280" r="54" className="center-border" />
+
+            <text x="280" y="274" textAnchor="middle" className="center-text-explore">
+              EXPLORE
+            </text>
+            <text x="280" y="292" textAnchor="middle" className="center-text-sub">
+              {activeOrbitId === 'explore' ? 'OVERVIEW' : 'RESET ×'}
+            </text>
+            <text x="280" y="309" textAnchor="middle" className="center-text-arrow">
+              ↓
+            </text>
+          </g>
+        </svg>
+
+        {/* Soft ground shadow beneath the planet */}
+        <div className="hero-shadow" aria-hidden="true" />
+      </div>
+
+      {/* Dedicated Content Inspector Panel */}
+      <div
+        className="orbit-inspector"
+        role="region"
+        aria-live="polite"
+        aria-label="Selected Solzen section details"
+      >
+        <div className="inspector-top-row">
+          <div className="inspector-tag-wrap">
+            <span className="inspector-pill-num">{activeData.num}</span>
+            <span className="inspector-pill-cat">{activeData.category}</span>
+          </div>
+          {activeOrbitId !== 'explore' && (
+            <button
+              type="button"
+              className="inspector-reset-btn"
+              onClick={() => setActiveOrbitId('explore')}
+              aria-label="Return to Explore Overview"
+            >
+              <span>Overview</span>
+              <span aria-hidden="true">↺</span>
+            </button>
+          )}
+        </div>
+
+        <div className="inspector-body">
+          <h3 className="inspector-title">
+            {activeData.title}{' '}
+            {activeData.subtitle && <i>{activeData.subtitle}</i>}
+          </h3>
+          <p className="inspector-desc">{activeData.desc}</p>
+        </div>
+
+        <div className="inspector-footer">
+          <a
+            href={activeData.actionHref}
+            className="inspector-cta-btn"
+            onClick={e => handleScrollToSection(e, activeData.actionHref.replace('#', ''))}
+          >
+            <span>{activeData.actionLabel}</span>
+            <span className="inspector-cta-arrow" aria-hidden="true">↓</span>
+          </a>
+          <span className="inspector-accent-badge">{activeData.accent}</span>
+        </div>
+      </div>
+
+      {/* Quick Navigation Strip (Touch / Mobile Friendly) */}
+      <div className="orbit-quick-strip" aria-label="Explore Solzen sections quick navigation">
+        {Object.values(orbitSections).map(sec => {
+          const isSelected = (hoveredOrbitId || activeOrbitId) === sec.id;
+          return (
+            <button
+              type="button"
+              key={sec.id}
+              className={`orbit-quick-pill ${isSelected ? 'active' : ''}`}
+              onClick={() => {
+                setActiveOrbitId(sec.id);
+                setHoveredOrbitId(null);
+              }}
+              aria-label={`Select ${sec.label}`}
+            >
+              <span className="quick-pill-dot" aria-hidden="true" />
+              <span className="quick-pill-text">{sec.label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function App() {
-  const [opening, setOpening] = useState(true);
+  const [opening, setOpening] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const [activeTab, setActiveTab] = useState('insights');
   const [activeModal, setActiveModal] = useState(null);
+  const [activeOrbitId, setActiveOrbitId] = useState('explore');
+  const [hoveredOrbitId, setHoveredOrbitId] = useState(null);
+  const [isInteractingOrbit, setIsInteractingOrbit] = useState(false);
 
   // EmailJS Contact Form State
   const [formData, setFormData] = useState({
@@ -593,61 +1051,24 @@ function App() {
                 SOLZEN is building a new approach to learning — one that moves beyond memorisation toward deeper understanding, measurable progress and real-world application.
               </p>
               <div className="hero-actions">
-                <a className="button dark" href="#about" onClick={e => handleScrollToSection(e, 'about')}>
-                  Explore SOLZEN <span>↓</span>
+                <a className="button dark hero-primary-cta" href="#about" onClick={e => handleScrollToSection(e, 'about')}>
+                  <span>Explore SOLZEN</span> <span className="cta-arrow" aria-hidden="true">↓</span>
                 </a>
-                <a className="underlink" href="#contact" onClick={e => handleScrollToSection(e, 'contact')}>
-                  Connect With Us <Arrow />
+                <a className="underlink hero-secondary-link" href="#contact" onClick={e => handleScrollToSection(e, 'contact')}>
+                  <span>Connect With Us</span> <Arrow />
                 </a>
               </div>
             </div>
 
-            <div className="hero-object animate" id="hero-learning-sculpture">
-              {/* Soft blurred gold-and-sage glow behind planet */}
-              <div className="hero-glow" aria-hidden="true" />
-
-              {/* Entire planet system floating as one unit (8-12px vertical, 3-5px horizontal drift over 8-10s) */}
-              <div className="planet-system">
-                {/* Concentric rings group that reacts with subtle scale on hover */}
-                <div className="rings-group" aria-hidden="true">
-                  {/* Large dashed outer ring (rotates 50 to 70s) */}
-                  <div className="editorial-ring ring-outer" />
-                  {/* Concentric mid ring */}
-                  <div className="editorial-ring ring-mid" />
-                  {/* Amber dotted inner ring (rotates opposite direction, 35 to 45s) */}
-                  <div className="editorial-ring ring-inner" />
-                </div>
-
-                {/* Elliptical orbit line revolving 360 degrees around the planet */}
-                <div className="orbit-revolve-wrapper" aria-hidden="true">
-                  <div className="orbit o-one" />
-                  {/* Small amber orbit node pulsing softly every 3 to 4s */}
-                  <div className="orbit-node node-amber" />
-                  {/* Subtle dark green secondary node */}
-                  <div className="orbit-node node-forest" />
-                </div>
-
-                {/* Central Explore core floating independently (+4 to 6px extra) */}
-                <div className="core-float-wrapper">
-                  <a
-                    className="object-core"
-                    href="#about"
-                    onClick={e => handleScrollToSection(e, 'about')}
-                    aria-label="Explore SOLZEN learning philosophy - scroll to About section"
-                  >
-                    <div className="core-pulse" aria-hidden="true" />
-                    <span className="core-label">Explore</span>
-                    <span className="core-arrow" aria-hidden="true">↓</span>
-                  </a>
-                </div>
-
-                <p className="coordinate c-one" aria-hidden="true">UNDERSTAND / 01</p>
-                <p className="coordinate c-two" aria-hidden="true">APPLY / ∞</p>
-              </div>
-
-              {/* Subtle elliptical shadow beneath the planet that softens when the planet rises */}
-              <div className="hero-shadow" aria-hidden="true" />
-            </div>
+            <ExploreOrbit
+              activeOrbitId={activeOrbitId}
+              setActiveOrbitId={setActiveOrbitId}
+              hoveredOrbitId={hoveredOrbitId}
+              setHoveredOrbitId={setHoveredOrbitId}
+              isInteractingOrbit={isInteractingOrbit}
+              setIsInteractingOrbit={setIsInteractingOrbit}
+              handleScrollToSection={handleScrollToSection}
+            />
 
             <div className="hero-foot">
               <span>Scroll to discover</span>
