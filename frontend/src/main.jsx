@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import emailjs from '@emailjs/browser';
 import './styles.css';
 import './intro.css';
+import BrandIntro from './BrandIntro';
 
 const Arrow = () => <span className="arrow">↗</span>;
 const Logo = () => (
@@ -507,11 +508,8 @@ function ExploreOrbit({
   hoveredOrbitId,
   setHoveredOrbitId,
   isInteractingOrbit,
-  setIsInteractingOrbit,
-  handleScrollToSection
+  setIsInteractingOrbit
 }) {
-  const activeData = orbitSections[hoveredOrbitId || activeOrbitId] || orbitSections.explore;
-
   return (
     <div
       className={`hero-object animate show ${isInteractingOrbit || hoveredOrbitId ? 'orbit-paused' : ''}`}
@@ -693,7 +691,7 @@ function ExploreOrbit({
             })}
           </g>
 
-          {/* Central EXPLORE Core (Default Overview / Reset - size and styling preserved) */}
+          {/* Central SOLZEN Core (overview / reset) */}
           <g
             className={`orbit-center-core ${activeOrbitId === 'explore' ? 'is-overview' : ''}`}
             onClick={() => setActiveOrbitId('explore')}
@@ -703,7 +701,7 @@ function ExploreOrbit({
             onBlur={() => setHoveredOrbitId(null)}
             tabIndex={0}
             role="button"
-            aria-label="Explore Solzen Overview (Reset selection)"
+            aria-label="Return to SOLZEN overview"
             aria-pressed={activeOrbitId === 'explore'}
             onKeyDown={e => {
               if (e.key === 'Enter' || e.key === ' ') {
@@ -716,16 +714,22 @@ function ExploreOrbit({
             <circle cx="280" cy="280" r="60" className="center-pulse-ring" />
             <circle cx="280" cy="280" r="54" fill="url(#planetGrad)" className="center-sphere" />
             <circle cx="280" cy="280" r="54" className="center-border" />
-
-            <text x="280" y="274" textAnchor="middle" className="center-text-explore">
-              EXPLORE
-            </text>
-            <text x="280" y="292" textAnchor="middle" className="center-text-sub">
-              {activeOrbitId === 'explore' ? 'OVERVIEW' : 'RESET ×'}
-            </text>
-            <text x="280" y="309" textAnchor="middle" className="center-text-arrow">
-              ↓
-            </text>
+            <defs>
+              <clipPath id="centerLogoClip">
+                <circle cx="280" cy="280" r="35" />
+              </clipPath>
+            </defs>
+            <circle cx="280" cy="280" r="36" className="center-logo-disc" />
+            <image
+              href="/solzen-logo.png"
+              x="244"
+              y="244"
+              width="72"
+              height="72"
+              preserveAspectRatio="xMidYMid slice"
+              clipPath="url(#centerLogoClip)"
+              className="center-logo-image"
+            />
           </g>
         </svg>
 
@@ -733,80 +737,13 @@ function ExploreOrbit({
         <div className="hero-shadow" aria-hidden="true" />
       </div>
 
-      {/* Dedicated Content Inspector Panel */}
-      <div
-        className="orbit-inspector"
-        role="region"
-        aria-live="polite"
-        aria-label="Selected Solzen section details"
-      >
-        <div className="inspector-top-row">
-          <div className="inspector-tag-wrap">
-            <span className="inspector-pill-num">{activeData.num}</span>
-            <span className="inspector-pill-cat">{activeData.category}</span>
-          </div>
-          {activeOrbitId !== 'explore' && (
-            <button
-              type="button"
-              className="inspector-reset-btn"
-              onClick={() => setActiveOrbitId('explore')}
-              aria-label="Return to Explore Overview"
-            >
-              <span>Overview</span>
-              <span aria-hidden="true">↺</span>
-            </button>
-          )}
-        </div>
-
-        <div className="inspector-body">
-          <h3 className="inspector-title">
-            {activeData.title}{' '}
-            {activeData.subtitle && <i>{activeData.subtitle}</i>}
-          </h3>
-          <p className="inspector-desc">{activeData.desc}</p>
-        </div>
-
-        <div className="inspector-footer">
-          <a
-            href={activeData.actionHref}
-            className="inspector-cta-btn"
-            onClick={e => handleScrollToSection(e, activeData.actionHref.replace('#', ''))}
-          >
-            <span>{activeData.actionLabel}</span>
-            <span className="inspector-cta-arrow" aria-hidden="true">↓</span>
-          </a>
-          <span className="inspector-accent-badge">{activeData.accent}</span>
-        </div>
-      </div>
-
-      {/* Quick Navigation Strip (Touch / Mobile Friendly) */}
-      <div className="orbit-quick-strip" aria-label="Explore Solzen sections quick navigation">
-        {Object.values(orbitSections).map(sec => {
-          const isSelected = (hoveredOrbitId || activeOrbitId) === sec.id;
-          return (
-            <button
-              type="button"
-              key={sec.id}
-              className={`orbit-quick-pill ${isSelected ? 'active' : ''}`}
-              onClick={() => {
-                setActiveOrbitId(sec.id);
-                setHoveredOrbitId(null);
-              }}
-              aria-label={`Select ${sec.label}`}
-            >
-              <span className="quick-pill-dot" aria-hidden="true" />
-              <span className="quick-pill-text">{sec.label}</span>
-            </button>
-          );
-        })}
-      </div>
     </div>
   );
 }
 
 function App() {
-  const [opening, setOpening] = useState(false);
-  const [leaving, setLeaving] = useState(false);
+  // Intro loading screen appears on initial application mount / every page reload
+  const [opening, setOpening] = useState(true);
   const [activeTab, setActiveTab] = useState('insights');
   const [activeModal, setActiveModal] = useState(null);
   const [activeOrbitId, setActiveOrbitId] = useState('explore');
@@ -823,17 +760,17 @@ function App() {
   const [formLoading, setFormLoading] = useState(false);
   const [formStatus, setFormStatus] = useState({ type: '', text: '' });
 
+  const handleIntroComplete = () => {
+    setOpening(false);
+  };
+
   useEffect(() => {
-    const beginExit = setTimeout(() => setLeaving(true), 1600);
-    const finishOpening = setTimeout(() => setOpening(false), 2300);
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('show')),
       { threshold: 0.12 }
     );
     document.querySelectorAll('.animate').forEach(el => observer.observe(el));
     return () => {
-      clearTimeout(beginExit);
-      clearTimeout(finishOpening);
       observer.disconnect();
     };
   }, []);
@@ -1000,17 +937,7 @@ function App() {
 
   return (
     <>
-      {opening && (
-        <div
-          className={leaving ? 'brand-intro intro-leave' : 'brand-intro'}
-          aria-label="SOLZEN"
-        >
-          <div className="intro-glow" />
-          <img src="/solzen-logo.png" alt="SOLZEN" />
-          <div className="intro-wordmark">SOLZEN</div>
-          <p>Deeper learning. Better understanding.</p>
-        </div>
-      )}
+      {opening && <BrandIntro onComplete={handleIntroComplete} />}
 
       <div className={opening ? 'site site-wait' : 'site'}>
         <Header />
@@ -1020,28 +947,6 @@ function App() {
           <section className="hero" id="home">
             <div className="hero-noise" />
             <div className="hero-copy animate show">
-              <div className="hero-badge-row">
-                <div className="hero-seal-badge" aria-label="SOLZEN Research & Learning Seal">
-                  <svg viewBox="0 0 100 100" className="hero-seal-svg" aria-hidden="true">
-                    <defs>
-                      <path id="sealPath" d="M 50, 50 m -36, 0 a 36,36 0 1,1 72,0 a 36,36 0 1,1 -72,0" />
-                    </defs>
-                    <text className="hero-seal-text">
-                      <textPath href="#sealPath" startOffset="0%">
-                        SOLZEN • RESEARCH &amp; LEARNING • 2026 •
-                      </textPath>
-                    </text>
-                  </svg>
-                  <div className="hero-seal-core">
-                    <img src="/solzen-logo.png" alt="SOLZEN Seal" />
-                  </div>
-                </div>
-                <div className="hero-badge-meta">
-                  <span className="hero-badge-tag">Early-Stage Research</span>
-                  <span className="hero-badge-sub">Pedagogical Architecture · Est. 2026</span>
-                </div>
-              </div>
-
               <p className="kicker">Technology × Education</p>
               <h1>
                 Making Learning Deeper.<br />
@@ -1067,7 +972,6 @@ function App() {
               setHoveredOrbitId={setHoveredOrbitId}
               isInteractingOrbit={isInteractingOrbit}
               setIsInteractingOrbit={setIsInteractingOrbit}
-              handleScrollToSection={handleScrollToSection}
             />
 
             <div className="hero-foot">
@@ -1076,39 +980,7 @@ function App() {
             </div>
           </section>
 
-          {/* 2. INSTITUTIONAL AFFILIATION (NIRMAAN ECOSYSTEM, IIT MADRAS) */}
-          <section className="ecosystem-bar" aria-label="Institutional Affiliation">
-            <div className="ecosystem-container shell">
-              <div className="ecosystem-lockup">
-                <div className="ecosystem-label-row">
-                  <span className="ecosystem-badge-tag">
-                    <span className="ecosystem-tag-dot" aria-hidden="true" />
-                    INCUBATED ECOSYSTEM
-                  </span>
-                </div>
-                <div className="ecosystem-card" title="Nirmaan, The Pre-Incubation Cell at IIT Madras">
-                  <div className="ecosystem-logo-frame">
-                    <img
-                      src="/nirmaan-logo.png"
-                      alt="Nirmaan IIT Madras Logo"
-                      className="ecosystem-logo"
-                      width="160"
-                      height="159"
-                      loading="lazy"
-                    />
-                  </div>
-                </div>
-                <div className="ecosystem-details">
-                  <div className="ecosystem-accent-line" aria-hidden="true" />
-                  <p className="ecosystem-text">
-                    Supported within the <strong>Nirmaan Ecosystem</strong>, <strong>IIT Madras</strong>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* 3. PROBLEM & OPPORTUNITY (PDF Section 4 & 21) */}
+          {/* 2. PROBLEM & OPPORTUNITY (PDF Section 4 & 21) */}
           <section className="opportunity shell" id="about">
             <p className="section-label">01 / The Problem &amp; Opportunity</p>
             <div className="split">
@@ -1331,6 +1203,36 @@ function App() {
                     Channels:
                   </p>
                   <span>General Enquiries · Partnerships · Institutional Research · Media · Careers</span>
+                </div>
+
+                {/* INSTITUTIONAL AFFILIATION LOCKUP (NIRMAAN ECOSYSTEM, IIT MADRAS) */}
+                <div className="contact-ecosystem-slot" aria-label="Institutional Affiliation">
+                  <div className="ecosystem-lockup contact-ecosystem-lockup">
+                    <div className="ecosystem-label-row">
+                      <span className="ecosystem-badge-tag">
+                        <span className="ecosystem-tag-dot" aria-hidden="true" />
+                        INCUBATED ECOSYSTEM
+                      </span>
+                    </div>
+                    <div className="ecosystem-card" title="Nirmaan, The Pre-Incubation Cell at IIT Madras">
+                      <div className="ecosystem-logo-frame">
+                        <img
+                          src="/nirmaan-logo.png"
+                          alt="Nirmaan IIT Madras Logo"
+                          className="ecosystem-logo"
+                          width="140"
+                          height="139"
+                          loading="lazy"
+                        />
+                      </div>
+                    </div>
+                    <div className="ecosystem-details">
+                      <div className="ecosystem-accent-line" aria-hidden="true" />
+                      <p className="ecosystem-text">
+                        Supported within the <strong>Nirmaan Ecosystem</strong>, <strong>IIT Madras</strong>
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 

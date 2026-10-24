@@ -422,7 +422,8 @@ header.header .menu.menu-active span:last-child {
   position: relative;
   overflow: visible;
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
+  /* Keep the message dominant while giving the interactive orbit a focused stage. */
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
   align-items: center;
   gap: 40px;
   background-color: var(--ivory);
@@ -1082,6 +1083,17 @@ h2 i,
   transition: stroke 0.3s var(--ease);
 }
 
+.center-logo-disc {
+  fill: #F7F3EA;
+  stroke: rgba(201, 139, 60, 0.78);
+  stroke-width: 1.25;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+}
+
+.center-logo-image {
+  pointer-events: none;
+}
+
 .center-text-explore {
   font-family: var(--mono);
   font-size: 11px;
@@ -1112,6 +1124,12 @@ h2 i,
 
 .orbit-center-core:hover .center-border,
 .orbit-center-core:focus-visible .center-border {
+  stroke: var(--gold);
+  stroke-width: 2;
+}
+
+.orbit-center-core:hover .center-logo-disc,
+.orbit-center-core:focus-visible .center-logo-disc {
   stroke: var(--gold);
   stroke-width: 2;
 }
@@ -2532,6 +2550,105 @@ cite {
 
 .status-text {
   margin: 0;
+}
+
+/* Contact Section Ecosystem Placement (Adjusted for Available Space) */
+.contact-ecosystem-slot {
+  margin-top: 36px;
+  padding-top: 26px;
+  border-top: 1px solid rgba(247, 243, 234, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.contact-ecosystem-lockup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  max-width: 320px;
+  margin: 0;
+}
+
+.contact-ecosystem-lockup .ecosystem-label-row {
+  justify-content: flex-start;
+  margin-bottom: 12px;
+}
+
+.contact-ecosystem-lockup .ecosystem-card {
+  width: 100%;
+  max-width: 220px;
+  background: #FFFFFF;
+  border-radius: var(--radius-card);
+  padding: 18px 24px;
+  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.45),
+              0 0 20px rgba(201, 139, 60, 0.1);
+  border: 1px solid rgba(247, 243, 234, 0.15);
+  cursor: default;
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+.contact-ecosystem-lockup .ecosystem-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.55),
+              0 0 24px rgba(201, 139, 60, 0.18);
+}
+
+.contact-ecosystem-lockup .ecosystem-logo {
+  max-width: 124px;
+  height: auto;
+}
+
+.contact-ecosystem-lockup .ecosystem-details {
+  align-items: flex-start;
+  margin-top: 12px;
+}
+
+.contact-ecosystem-lockup .ecosystem-accent-line {
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, rgba(201, 139, 60, 0.6), transparent);
+}
+
+.contact-ecosystem-lockup .ecosystem-text {
+  text-align: left;
+  color: #B2C5BC;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.contact-ecosystem-lockup .ecosystem-text strong {
+  color: #F7F3EA;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .contact-ecosystem-slot {
+    align-items: center;
+    margin-top: 26px;
+    padding-top: 22px;
+  }
+
+  .contact-ecosystem-lockup {
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact-ecosystem-lockup .ecosystem-label-row {
+    justify-content: center;
+  }
+
+  .contact-ecosystem-lockup .ecosystem-details {
+    align-items: center;
+  }
+
+  .contact-ecosystem-lockup .ecosystem-accent-line {
+    background: linear-gradient(90deg, transparent, rgba(201, 139, 60, 0.6), transparent);
+  }
+
+  .contact-ecosystem-lockup .ecosystem-text {
+    text-align: center;
+  }
 }
 
 /* ==========================================================================
