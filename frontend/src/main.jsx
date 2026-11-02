@@ -4,6 +4,7 @@ import emailjs from '@emailjs/browser';
 import './styles.css';
 import './intro.css';
 import BrandIntro from './BrandIntro';
+import AiKnowledgeVisualizer from './AiKnowledgeVisualizer';
 
 const Arrow = () => <span className="arrow">↗</span>;
 const Logo = () => (
@@ -36,6 +37,8 @@ const techPillars = [
   ['05', 'Regional & Localised Learning', 'Contextualised pedagogical framing and linguistic accessibility designed for diverse learning ecosystems.']
 ];
 
+// To add a profile photo, set `photo` on a member (e.g. photo: '/team/padma.jpg' in /public).
+// Initials are shown as a fallback until a photo is provided.
 const teamMembers = [
   {
     initials: 'PG',
@@ -121,12 +124,12 @@ const orbitSections = {
   about: {
     id: 'about',
     num: '01',
-    category: 'PROBLEM & OPPORTUNITY',
+    category: 'THE CORE PROBLEM',
     label: 'ABOUT',
     title: 'Beyond Memorisation',
     subtitle: 'Visualising abstract concepts',
     desc: 'Students struggle to visualise underlying principles. We address where memorisation ends and durable, applicable understanding begins.',
-    actionLabel: 'Read Problem & Opportunity',
+    actionLabel: 'Explore Core Problem',
     actionHref: '#about',
     accent: 'Cognitive Depth',
     x: 142,
@@ -980,19 +983,96 @@ function App() {
             </div>
           </section>
 
-          {/* 2. PROBLEM & OPPORTUNITY (PDF Section 4 & 21) */}
-          <section className="opportunity shell" id="about">
-            <p className="section-label">01 / The Problem &amp; Opportunity</p>
-            <div className="split">
-              <h2>Students struggle to <i>visualise concepts</i> and apply knowledge.</h2>
-              <div className="copy">
-                <p>
-                  Information is everywhere, yet learners still struggle to visualise underlying principles, build deep understanding and translate knowledge into problem-solving and real-world application.
-                </p>
-                <p>
-                  We are addressing the critical gap where memorisation ends and genuine, durable understanding begins — making invisible mental models visible, measurable and applicable.
-                </p>
-                <a className="underlink" href="#approach">Our learning pipeline <span>↓</span></a>
+          {/* 2. ABOUT SOLZEN — RETHINKING HOW WE LEARN */}
+          <section className="about-section shell" id="about">
+            <div className="about-layout-grid">
+              {/* Left Column: Interactive AI Knowledge Visualizer */}
+              <div className="about-visual-column">
+                <AiKnowledgeVisualizer />
+              </div>
+
+              {/* Right Column: Engaging Content Hierarchy & 3 Elegant Cards */}
+              <div className="about-content-column">
+                <div className="about-header-block">
+                  <div className="about-eyebrow">
+                    <span className="about-eyebrow-spark" aria-hidden="true">✦</span>
+                    <span>RETHINKING HOW WE LEARN</span>
+                  </div>
+                  <h2 className="about-main-heading">
+                    From memorising information to <span className="about-gold-accent">understanding</span> ideas.
+                  </h2>
+                  <p className="about-supporting-text">
+                    SOLZEN helps learners uncover the connections behind complex concepts, build lasting mental models, and turn knowledge into meaningful action.
+                  </p>
+                </div>
+
+                {/* Three Elegant Distinct Content Cards */}
+                <div className="about-cards-list">
+                  {/* Card 1: The Learning Gap */}
+                  <article className="about-card card-gap">
+                    <div className="about-card-badge-row">
+                      <div className="about-card-icon gap-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
+                          <circle cx="12" cy="12" r="10" strokeDasharray="4 3" />
+                          <line x1="12" y1="8" x2="12" y2="12" />
+                          <line x1="12" y1="16" x2="12.01" y2="16" />
+                        </svg>
+                      </div>
+                      <span className="about-card-step">Challenge</span>
+                    </div>
+                    <h3 className="about-card-title">The Learning Gap</h3>
+                    <p className="about-card-desc">
+                      Information is everywhere, yet understanding remains difficult. Learners often struggle to connect concepts, visualise underlying principles, and apply what they know.
+                    </p>
+                  </article>
+
+                  {/* Card 2: The SOLZEN Approach */}
+                  <article className="about-card card-approach highlight-card">
+                    <div className="about-card-badge-row">
+                      <div className="about-card-icon approach-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
+                          <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                          <polyline points="2 17 12 22 22 17" />
+                          <polyline points="2 12 12 17 22 12" />
+                        </svg>
+                      </div>
+                      <span className="about-card-step gold-step">Architecture</span>
+                    </div>
+                    <h3 className="about-card-title">The SOLZEN Approach</h3>
+                    <p className="about-card-desc">
+                      We transform complex ideas into clear visual explanations, interconnected concepts, and intuitive learning experiences that make deeper understanding easier.
+                    </p>
+                  </article>
+
+                  {/* Card 3: The Outcome */}
+                  <article className="about-card card-outcome">
+                    <div className="about-card-badge-row">
+                      <div className="about-card-icon outcome-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                          <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                      </div>
+                      <span className="about-card-step">Outcome</span>
+                    </div>
+                    <h3 className="about-card-title">The Outcome</h3>
+                    <p className="about-card-desc">
+                      Move beyond short-term memorisation toward durable understanding, stronger reasoning, and confident real-world problem-solving.
+                    </p>
+                  </article>
+                </div>
+
+                {/* Refined Downward CTA */}
+                <div className="about-cta-row">
+                  <a
+                    className="button dark about-explore-cta"
+                    href="#approach"
+                    onClick={e => handleScrollToSection(e, 'approach')}
+                  >
+                    <span>Explore Our Learning Approach</span>
+                    <span className="cta-arrow" aria-hidden="true">↓</span>
+                  </a>
+                </div>
               </div>
             </div>
           </section>
@@ -1000,7 +1080,7 @@ function App() {
           {/* 4. LEARNING PHILOSOPHY & FRAMEWORK (PDF Section 4 & 21) */}
           <section className="approach" id="approach">
             <div className="shell">
-              <div className="approach-intro">
+              <div className="approach-intro animate">
                 <div>
                   <p className="kicker gold">A learning rhythm</p>
                   <h2>Depth has a <i>process.</i></h2>
@@ -1026,7 +1106,7 @@ function App() {
           <section className="think shell">
             <p className="section-label">02 / How We Think</p>
             <div className="think-layout">
-              <div>
+              <div className="animate">
                 <h2>
                   Made for<br />
                   the way minds <i>move.</i>
@@ -1036,9 +1116,8 @@ function App() {
                 </p>
               </div>
               <div className="principle-list">
-                {thinking.map(([title, text], i) => (
-                  <div className="principle" key={title}>
-                    <span>0{i + 1}</span>
+                {thinking.map(([title, text]) => (
+                  <div className="principle animate" key={title}>
                     <strong>{title}</strong>
                     <p>{text}</p>
                   </div>
@@ -1060,9 +1139,8 @@ function App() {
                 </p>
               </div>
               <div className="tech-grid">
-                {techPillars.map(([num, title, desc]) => (
+                {techPillars.map(([, title, desc]) => (
                   <div className="tech-card animate" key={title}>
-                    <span className="tech-num">{num}</span>
                     <h3>{title}</h3>
                     <p>{desc}</p>
                   </div>
@@ -1072,7 +1150,8 @@ function App() {
           </section>
 
           {/* 7. TEAM SECTION (PDF Section 6 & 21) */}
-          <section className="team shell" id="team">
+          <section className="team" id="team">
+            <div className="shell">
             <div className="section-head">
               <div>
                 <p className="kicker">04 / Leadership &amp; Research</p>
@@ -1085,7 +1164,13 @@ function App() {
               {teamMembers.map(m => (
                 <div className="team-card animate" key={m.name}>
                   <div className="team-card-top">
-                    <div className="team-avatar">{m.initials}</div>
+                    <div className="team-avatar">
+                      {m.photo ? (
+                        <img src={m.photo} alt={m.name} loading="lazy" />
+                      ) : (
+                        <span aria-hidden="true">{m.initials}</span>
+                      )}
+                    </div>
                     <div className="team-meta">
                       <h4>{m.name}</h4>
                       <span className="team-role">{m.role}</span>
@@ -1113,10 +1198,11 @@ function App() {
               ))}
             </div>
 
-            <blockquote className="animate" style={{ marginTop: '48px' }}>
+            <blockquote className="animate">
               “Better learning is not a feature. It’s a philosophy.”
               <cite>— SOLZEN Core Principle</cite>
             </blockquote>
+            </div>
           </section>
 
           {/* 8. LATEST INSIGHTS & UPDATES (PDF Section 8, 9 & 21) */}
@@ -1393,7 +1479,7 @@ function App() {
                   </li>
                   <li><a href="https://linkedin.com/company/solzen" target="_blank" rel="noopener noreferrer">LinkedIn <Arrow /></a></li>
                   <li><a href="https://x.com/solzen_in" target="_blank" rel="noopener noreferrer">X / Twitter <Arrow /></a></li>
-                  <li><a href="mailto:contact@solzen.in">contact@solzen.in</a></li>
+                  <li><a href="mailto:info@solzen.in">info@solzen.in</a></li>
                 </ul>
               </div>
             </div>
