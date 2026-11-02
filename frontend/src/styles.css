@@ -421,6 +421,8 @@ header.header .menu.menu-active span:last-child {
   padding: 145px var(--section-pad-x) 75px;
   position: relative;
   overflow: visible;
+  /* Clip decorative glow/shadow horizontally so phones never get a wider layout viewport */
+  overflow-x: clip;
   display: grid;
   /* Keep the message dominant while giving the interactive orbit a focused stage. */
   grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
@@ -2132,12 +2134,22 @@ h2 i,
   }
 
   .ai-concept-card {
-    min-width: 110px;
+    min-width: 0;
+    max-width: 42%;
     padding: 8px 10px;
   }
 
   .card-sub {
     display: none;
+  }
+
+  /* Keep side nodes (cx 22% / 78%) inside the stage on narrow phones */
+  .card-badge-pill {
+    display: none;
+  }
+
+  .card-title {
+    overflow-wrap: break-word;
   }
 
   .ai-inspector-bar {
@@ -2151,6 +2163,17 @@ h2 i,
   }
 }
 
+@media (max-width: 400px) {
+  .ai-concept-card {
+    max-width: 44%;
+    padding: 7px 8px;
+  }
+
+  .card-title {
+    font-size: 11px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ai-concept-card,
   .ai-pulsing-node,
@@ -2160,11 +2183,15 @@ h2 i,
     transition: none !important;
     transform: none !important;
   }
+  /* Keep cards centred on their node coordinates */
+  .ai-concept-card {
+    transform: translate(-50%, -50%) !important;
+  }
 }
 
 /* ==========================================================================
    4. LEARNING FRAMEWORK / PIPELINE (DARK FOREST GREEN)
-   Palette: forest #0B382F Â· cream #F5F1E7 Â· gold #D99A42 Â· muted #B9C9C1
+   Palette: forest #0B382F · cream #F5F1E7 · gold #D99A42 · muted #B9C9C1
    ========================================================================== */
 
 .approach {
@@ -2395,6 +2422,7 @@ h2 i,
 @media (max-width: 560px) {
   .steps {
     grid-template-columns: 1fr;
+    grid-auto-rows: auto;
   }
 
   .approach .step {
@@ -4085,6 +4113,22 @@ footer {
 
   .planet-system.orbit-interactive-system {
     max-width: 310px;
+  }
+}
+
+/* Touch devices: comfortable tap targets for small text links */
+@media (pointer: coarse) {
+  .hero-secondary-link,
+  .team-linkedin,
+  .team-contact-btn,
+  .underlink {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .team-actions {
+    padding-top: 6px;
   }
 }
 

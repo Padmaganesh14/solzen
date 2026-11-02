@@ -1104,9 +1104,9 @@ function App() {
 
           {/* 5. HOW WE THINK (PDF Section 4 & 21) */}
           <section className="think shell">
-            <p className="section-label">02 / How We Think</p>
             <div className="think-layout">
               <div className="animate">
+                <p className="section-label">02 / How We Think</p>
                 <h2>
                   Made for<br />
                   the way minds <i>move.</i>
